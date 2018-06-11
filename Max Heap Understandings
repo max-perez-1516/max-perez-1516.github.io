@@ -1,0 +1,95 @@
+//
+//  main.cpp
+//  Heap Sort
+//
+//  Created by Max Perez on 6/10/18.
+//  Copyright © 2018 Max Perez. All rights reserved.
+//
+
+/*
+ * C Program to demonstrate Heap Sort
+ */
+#include "stdlib.h"
+#include "stdio.h"
+#include "stdbool.h"
+#include "time.h"
+
+#define MAX_VAL 50                              // Maximum value of the numbers generated will be 50
+#define MAX_NUMS 10                             // There will only be a maximum of 10 numbers generated
+#define EXAMPLES 5                              // Number of examples generated
+
+void printNums(int* nums, int n) {              // Print nums has an int* nums array. Along with the paramater n
+    for (int i = 1; i <= n; i += 1) {           // which is MAX_NUMS. Starting at 1 in the heap.
+        printf("%d ", nums[i]);                 // As i is incremented through the array, it prints the value of nums
+                                                // where i lays in the array.
+    }
+    printf("\n");                               // Prints a new line after the for loop is executed.
+}
+
+void max_heapify(int* a, int parent, int n) {   //
+    int pValue = a[parent];                     // get value of parent
+    int j = 2 * parent;                         // refer to left child
+    bool looking = true;
+    
+    while (j <= n && looking) {
+        if (j < n && a[j + 1] > a[j]) {         // right child larger?
+            j = j + 1;                          // select right child
+        }
+        
+        if (pValue >= a[j])                     // if parent > child stop checking
+            looking = false;
+        else {
+            a[j / 2] = a[j];                    // otherwise move child to parent
+            j = 2 * j;                          // move down to next child
+        }
+    }
+    
+    a[j / 2] = pValue;                          // put parent value into correct spot
+    return;
+}
+
+void swap(int* x, int* y) {                     // int pointer to x (which will be passed (a)) and int pointer to y
+                                                // (which will be passed (n)).
+    int temp = *x;                              // temporary int temp, which *x will be.
+    *x = *y;                                    // setting *x = *y
+    *y = temp;                                  // then setting the *y to the temporary value which x was in.
+}
+
+// Assumes build_maxheap() has been called!
+void heap_sort(int* a, int n) {                 // Define heap_sort, takes an int pointer to the MAX_NUMS + 1,
+    for (int i = n; i >= 2; i -= 1) {           // int n (MAX_NUMS). Goes through a loop which decrements through the
+                                                // MAX_NUMS + 1.
+        swap(a + i, a + 1);                     // Then it swaps the position of a + i and a + 1.
+        max_heapify(a, 1, i - 1);               // Here it max_heapify's the the swapped values given by swap.
+    }
+}
+
+void build_maxheap(int* a, int n) {             // Define build_maxheap, takes an int pointer to the MAX_NUMS + 1,
+    for (int i = n/2; i >= 1; i -= 1) {         //
+        max_heapify(a, i, n);
+    }
+}
+
+void randomNums(int* a, int n) {                // Define randomNums, which takes an int* a (which will point to the
+    for (int i = 1; i <= n; i += 1) {           // array nums) along with int n (which is set to MAX_VALS).
+        a[i] = rand() % MAX_VAL + 1;            // Random % of max_val + 1.
+    }
+}
+
+int main() {
+    srand((unsigned int)time(0));               //
+    int n = MAX_NUMS;                           // setting n = MAX_NUMS which has been defined
+    int a[MAX_NUMS + 1] = {0};                  // setting a[MAX_NUMS + 1] = {0}
+    
+    for (int i = 1; i <= EXAMPLES; i += 1) {    // for loop which iterates from first through the amount of examples
+        randomNums(a, n);                       // calling randomNums(a, n) with [MAX_VALS] and [MAX_VALS + 1]
+        printNums(a, n);                        // calling printNums(a, n) with [MAX_VALS] and [MAX_VALS + 1]
+        printf("Max Heap\n");                   // simple print
+        build_maxheap(a, n);                    // calling build_maxheap with [MAX_VALS] and [MAX_VALS + 1]
+        printNums(a, n);                        // calling printNums with [MAX_VALS] and [MAX_VALS + 1]
+        printf("Sorted Output\n");              // simple print
+        heap_sort(a, n);                        // calling heap_sort with [MAX_VALS] and [MAX_VALS + 1]
+        printNums(a, n);                        // calling printNums with [MAX_VALS + 1]
+        printf("\n");
+    }
+}
