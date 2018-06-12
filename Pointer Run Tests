@@ -1,0 +1,76 @@
+//
+//  main.cpp
+//  pointer test from pointer quizes 
+//
+//  Created by Max Perez on 3/11/18.
+//  Copyright © 2018 Max Perez. All rights reserved.
+//
+
+#include <iostream>
+using namespace std;
+
+void pointer1() {
+    int k = 99;
+    int *p = &k;
+    int **pp = &p;
+
+    cout << "p value: " << p << " *p value: "
+    << *p << endl;
+
+    cout << "pp value: " << pp << " *pp value: " << *pp << " **pp value: " << **pp << endl;
+
+}
+
+void pointer2() {
+    int x[10] = { 1, 2, 3, 4 };
+    int *p = x;
+    cout << x[0] << "," << *x << "," << *p << ","
+    << *(p+1) << "," << 1[x] << "," << p[1] << endl;
+    
+}
+
+void pointer3() {
+    int x[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+    int *p = x + 2;
+    int *q = x + 6;
+    for (; p < q ;) {
+        cout << *p++ << endl;
+    }
+}
+
+int sum(int *p, int size) {
+    int total = 0;
+    int *x = p;
+    
+    for (p = p + 2; p < x + (size - 2); p++) {
+        total += *p;
+    }
+    return total;
+}
+void demo4() {
+    int x[10] = {1, 2, 3, 4, 5, 6, 7 };
+    cout << sum(x, 10) << endl;
+}
+
+int sum2(int p[][3], int size) {
+    int total = 0;
+    int *x = *(p+1);
+    
+    for ( ++x ; x < *(p +2) ; x++) {
+        total += *x;
+    }
+    return total;
+}
+
+void demo5() {
+    int x[4][3] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    cout << sum2(x, 4) << endl;
+}
+
+int main() {
+    //pointer1();
+    //pointer2();
+    pointer3();
+    demo4();
+    demo5();
+}
