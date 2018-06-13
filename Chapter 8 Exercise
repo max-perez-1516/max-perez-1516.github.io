@@ -1,0 +1,114 @@
+//
+//  main.cpp
+//  Tortise and Hare
+//
+//  Created by Max Perez on 6/13/18.
+//  Copyright © 2018 Max Perez. All rights reserved.
+//
+
+#include <iostream>
+#include <string>
+#include <random>
+
+class participant {
+public:
+    std::string name;
+    int position;
+    
+    participant() : position(1) {}
+};
+
+enum class GameStates {Go, Stop};
+
+
+
+class TortiseHare {
+private:
+    static const int COURSE_LIMIT = 70;
+    
+    participant tortise;
+    participant hare;
+    
+    GameStates gameState;
+    
+    std::mt19937 rnum;    // looked up a pseudo random number generator
+    
+    void initialize();
+    void moveTortise(participant &);
+    void movehare(participant &);
+    bool winner(participant &);
+    void update();
+    int getRandomNumber();
+    void results();
+    
+public:
+    
+    TortiseHare() :
+    gameState(GameStates::Go), rnum(std::random_device()()) {}
+    
+    ~TortiseHare() {}
+    
+    void start();
+};
+
+int TortiseHare::getRandomNumber() {
+    return std::uniform_int_distribution<int>{1,10}(rnum);
+}
+
+void TortiseHare::initialize() {
+    srand(time(0));
+    
+    gameState = GameStates::Go;
+    
+    tortise.name = "Bob";
+    hare.name = "Lucy";
+    
+    std::cout << "BANG!!!!" << "\n" << " AND THEY'RE OFF !!!!" << std::endl;
+}
+void TortiseHare::moveTortise(participant &Bob) {
+    int BobMove = getRandomNumber();
+    
+    if (BobMove >= 1 && BobMove <= 5) {
+        Bob.position = (Bob.position + 3);
+    }
+    else if (BobMove <= 7) {
+        Bob.position = (Bob.position - 6);
+    }
+    else {
+        Bob.position = (Bob.position + 1);
+    }
+}
+void TortiseHare::movehare(participant &Lucy) {
+    int LucyMove = getRandomNumber();
+    
+    if (LucyMove == 1 || LucyMove == 2) {
+        Lucy.position = (Lucy.position + 11);
+    }
+    else if (LucyMove == 2 || LucyMove == 3) {
+        Lucy.position = (Lucy.position - 9);
+    }
+    else if (LucyMove == 4 || LucyMove == 5 || LucyMove == 6) {
+        Lucy.position = (Lucy.position);
+    }
+    else {
+        Lucy.position = (Lucy.position + 3);
+    }
+}
+
+void TortiseHare::results() {
+    if (tortise.position == COURSE_LIMIT && hare.position == COURSE_LIMIT) {
+        std::cout << "Its a Draw" << std::endl;
+    }
+    else if (tortise.position == COURSE_LIMIT && hare.position != COURSE_LIMIT) {
+        std::cout << "BOB WON!" << std::endl;
+    }
+    else {
+        std::cout << "Lucy WON" << std:: endl;
+    }
+}
+
+int main() {
+    TortiseHare th;
+    th.start();
+    return 0;
+}
