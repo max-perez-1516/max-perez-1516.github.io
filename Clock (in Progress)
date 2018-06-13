@@ -1,0 +1,37 @@
+//
+//  main.cpp
+//  Clock
+//
+//  Created by Max Perez on 6/13/18.
+//  Copyright © 2018 Max Perez. All rights reserved.
+//
+
+#include <iostream>
+#include <ctime>
+
+
+class ClockType {
+private:
+    int setHour();
+    int setMinute();
+    int setSecond();
+    int hour;
+    int minute;
+    int second;
+public:
+    ClockType(int h, int m, int s)
+    : hour{h}, minute{m}, second{s} {}
+    int getHour() {
+        return hour;
+    }
+    int getMinute() {
+        return minute;
+    }
+    int getSecond () {
+        return second;
+    }
+};
+
+int main(int argc, const char * argv[]) {
+    clock();
+}
